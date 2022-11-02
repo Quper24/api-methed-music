@@ -1,12 +1,19 @@
 // импорт стандартных библиотек Node.js
-const {existsSync, mkdirSync, readFileSync, writeFileSync, writeFile, unlink} = require('fs');
+const {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  writeFile,
+  unlink,
+  statSync
+} = require("fs");
 const { createServer } = require("http");
 const path = require("path");
 
 const DB_FILE = process.env.DB_FILE || path.resolve(__dirname, "db.json");
 const PORT = process.env.PORT || 3024;
 const URI_PREFIX = "/api/music";
-
 
 class ApiError extends Error {
   constructor(statusCode, data) {
@@ -16,9 +23,17 @@ class ApiError extends Error {
   }
 }
 
+const shuffle = (array) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
 
 function getItemsList(params = {}) {
-  const db = JSON.parse(readFileSync(DB_FILE) || "{}");
+  const db = shuffle(JSON.parse(readFileSync(DB_FILE) || "[]"));
 
   if (params.search) {
     const search = params.search.trim().toLowerCase();
@@ -29,10 +44,8 @@ function getItemsList(params = {}) {
     );
   }
 
-  return db
+  return db;
 }
-
-
 
 function getItems(itemId) {
   const data = JSON.parse(readFileSync(DB_FILE) || "[]");
@@ -40,7 +53,6 @@ function getItems(itemId) {
   if (!item) throw new ApiError(404, { message: "Item Not Found" });
   return item;
 }
-
 
 module.exports = server = createServer(async (req, res) => {
   if (req.url.substring(1, 4) === "img") {
@@ -54,28 +66,37 @@ module.exports = server = createServer(async (req, res) => {
 
   if (req.url.substring(1, 4) === "mp3") {
     res.statusCode = 200;
-    res.setHeader("Content-Type", "audio/mpeg");
-    require("fs").readFile(`.${req.url}`, (err, mp3) => {
-      res.end(mp3);
+    require("fs").readFile(`.${req.url}`, (err, data) => {
+      if (err) throw err;
+      const range = req.headers.range;
+      const total = data.length;
+      const parts = range.replace(/bytes=/, "").split("-");
+      const partialstart = parts[0];
+      const partialend = parts[1];
+      const start = parseInt(partialstart, 10);
+      const end = partialend ? parseInt(partialend, 10) : total - 1;
+      const chunksize = end - start + 1;
+      res.writeHead(206, {
+        "Content-Range": "bytes " + start + "-" + end + "/" + total,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunksize,
+        "Content-Type": "audio/mpeg",
+      });
+      res.end(data);
     });
     return;
   }
 
-
   res.setHeader("Content-Type", "application/json");
 
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, OPTIONS"
-  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
     res.end();
     return;
   }
-
 
   // если URI не начинается с нужного префикса - можем сразу отдать 404
   if (!req.url || !req.url.startsWith(URI_PREFIX)) {
@@ -124,7 +145,9 @@ module.exports = server = createServer(async (req, res) => {
       console.log("Нажмите CTRL+C, чтобы остановить сервер");
       console.log("Доступные методы:");
       console.log(`GET ${URI_PREFIX} - получить список треков`);
-      console.log(`GET ${URI_PREFIX}?{search=""} - поиск трека по исполнителю и названию`);
+      console.log(
+        `GET ${URI_PREFIX}?{search=""} - поиск трека по исполнителю и названию`
+      );
     }
   })
   .listen(PORT);

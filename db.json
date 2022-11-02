@@ -166,5 +166,82 @@
     "track": "Natural",
     "poster": "img/7435198574.jpg",
     "mp3": "mp3/7435198574.mp3"
+  },
+  {
+    "id": "5301092244",
+    "artist": "The weeknd",
+    "track": "Save your tears",
+    "poster": "img/5301092244.jpg",
+    "mp3": "mp3/5301092244.mp3"
+  },
+  {
+    "id": "5698907681",
+    "artist": "Imagine Dragons",
+    "track": "Follow You",
+    "poster": "img/5698907681.jpg",
+    "mp3": "mp3/5698907681.mp3"
+  },
+  {
+    "id": "4157048810",
+    "artist": "Tove Lo",
+    "track": "How Long",
+    "poster": "img/4157048810.jpg",
+    "mp3": "mp3/4157048810.mp3"
+  },
+  {
+    "id": "9762913319",
+    "artist": "Tom Odell",
+    "track": "Another Love",
+    "poster": "img/9762913319.jpg",
+    "mp3": "mp3/9762913319.mp3"
+  },
+  {
+    "id": "1626965584",
+    "artist": "Lana Del Rey",
+    "track": "Born To Die",
+    "poster": "img/1626965584.jpg",
+    "mp3": "mp3/1626965584.mp3"
+  },
+  {
+    "id": "3959251175",
+    "artist": "Adele",
+    "track": "Hello",
+    "poster": "img/3959251175.jpg",
+    "mp3": "mp3/3959251175.mp3"
+  },
+  {
+    "id": "9167087226",
+    "artist": "Tom Odell",
+    "track": "Can't Pretend",
+    "poster": "img/9167087226.jpg",
+    "mp3": "mp3/9167087226.mp3"
+  },
+  {
+    "id": "7816469663",
+    "artist": "Lana Del Rey",
+    "track": "Young And Beautiful",
+    "poster": "img/7816469663.jpg",
+    "mp3": "mp3/7816469663.mp3"
+  },
+  {
+    "id": "7456829066",
+    "artist": "Adele",
+    "track": "Someone Like You",
+    "poster": "img/7456829066.jpg",
+    "mp3": "mp3/7456829066.mp3"
+  },
+  {
+    "id": "8646210713",
+    "artist": "Drake",
+    "track": "Laugh Now Cry Later",
+    "poster": "img/8646210713.jpg",
+    "mp3": "mp3/8646210713.mp3"
+  },
+  {
+    "id": "6551053494",
+    "artist": "Madonna",
+    "track": "Frozen",
+    "poster": "img/6551053494.jpg",
+    "mp3": "mp3/6551053494.mp3"
   }
 ]
