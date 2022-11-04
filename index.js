@@ -140,7 +140,7 @@ module.exports = server = createServer(async (req, res) => {
   .on("listening", () => {
     if (process.env.NODE_ENV !== "test") {
       console.log(
-        `Сервер CRM запущен. Вы можете использовать его по адресу http://localhost:${PORT}`
+        `Сервер mth.music запущен. Вы можете использовать его по адресу http://localhost:${PORT}`
       );
       console.log("Нажмите CTRL+C, чтобы остановить сервер");
       console.log("Доступные методы:");
